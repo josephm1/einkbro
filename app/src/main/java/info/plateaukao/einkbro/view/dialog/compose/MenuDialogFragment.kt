@@ -567,24 +567,27 @@ fun MenuItems(
                 // the bottom and any partial chunk (overflow) ends up at the top. For 11 items
                 // with 6 columns, this renders as 5 items on top and 6 on bottom instead of
                 // the default 6 on top and 5 on bottom.
-                sec.items.chunked(MENU_GRID_COLUMNS).asReversed().forEach { rowItems ->
+                val items: List<MenuItemType?> = if (sec.section == MenuSection.Top && onHideToolbar != null) {
+                    listOf(null) + sec.items
+                } else sec.items
+                val rows = items.chunked(MENU_GRID_COLUMNS)
+                val displayRows = if (sec.section == MenuSection.Top && onHideToolbar != null) rows else rows.asReversed()
+                displayRows.forEach { rowItems ->
                     Row(
                         modifier = Modifier.wrapContentWidth(),
                         horizontalArrangement = Arrangement.End,
                     ) {
-                        rowItems.forEach { renderItem(it) }
+                        rowItems.forEach { type ->
+                            if (type != null) renderItem(type)
+                            else MenuItem(
+                                titleResId = R.string.setting_title_hideToolbar,
+                                iconResId = R.drawable.ic_expand_web_app,
+                                onClicked = { onHideToolbar?.invoke() },
+                            )
+                        }
                     }
                 }
                 renderedAnySection = true
-            }
-            if (onHideToolbar != null) {
-                HorizontalSeparator()
-                MenuItem(
-                    titleResId = R.string.setting_title_hideToolbar,
-                    iconResId = R.drawable.ic_toolbar,
-                    isLargeType = true,
-                    onClicked = onHideToolbar,
-                )
             }
         }
     }

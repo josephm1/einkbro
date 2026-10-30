@@ -50,7 +50,7 @@ class FabImageViewController(
                 setStroke(1.dp(context), Color.BLACK)
                 cornerRadius = 4.dp(context).toFloat()
             }
-            val icon = context.getDrawable(R.drawable.ic_toolbar)!!.mutate().apply { setTint(Color.BLACK) }
+            val icon = context.getDrawable(R.drawable.ic_expand_web_app)!!.mutate().apply { setTint(Color.BLACK) }
             textView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null)
             val padding = 12.dp(context)
             textView.setPadding(padding, padding, padding, padding)
